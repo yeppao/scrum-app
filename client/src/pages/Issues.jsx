@@ -6,10 +6,10 @@ import { AppContext } from '@context/AppContext';
 import { getEpics, getSprintIssues, getSprint } from '@repositories/projects';
 import IssuesList from '@components/IssuesList';
 import { SprintContext } from '@context/SprintContext';
-import { OrganizationChart } from 'primereact/organizationchart';
 import { Card } from 'primereact/card';
 import { Tag } from 'primereact/tag';
-
+import { OrganizationChart } from '@components/OrganizationChart';
+import * as d3 from 'd3';
 
 const nodeTemplate = node => {
   if (node.type === 'epic') {
@@ -41,6 +41,29 @@ const Issues = () => {
   const { issues, setIssues, sprintId, boardId } = useContext(SprintContext);
   const [sprints] = useState([]);
   const [orgIssues, setOrgIssues] = useState([]);
+  const [data, setData] = useState(null);
+  let addNodeChildFunc = null;
+
+  function addNode() {
+    const node = {
+      nodeId: 'new Node',
+      parentNodeId: 'O-6066'
+    };
+
+    addNodeChildFunc(node);
+  }
+
+  function onNodeClick(nodeId) {
+    alert('clicked ' + nodeId);
+  }
+
+  useEffect(() => {
+    d3.csv(
+      'https://raw.githubusercontent.com/bumbeishvili/sample-data/main/org.csv'
+    ).then(data => {
+      setData(data);
+    });
+  }, []);
 
   useEffect(() => {
     setStep(0);
@@ -79,21 +102,35 @@ const Issues = () => {
         children: secondLevel
       }];
 
-      console.log(sprintHierarchy);
       setIssues(issues);
-      setOrgIssues(sprintHierarchy);
+      setOrgIssues([
+        { nodeId: 'sprint', data: { type: 'sprint', label: currentSprint.name }},
+        ...epics.map(epic => ({ nodeId: epic.id, parentNodeId: 'sprint', data: { type: 'epic', ...epic } })),
+        ...issues.map(issue => ({
+          nodeId: issue.id,
+          parentNodeId: issue.fields.epic && _.find(epics, epic => epic.id === issue.fields.epic.id) ? issue?.fields?.epic?.id : 'sprint',
+          data: { type: 'issue', ...issue }
+        })),
+      ]);
     }
 
     handleSprintChange();
   }, [boardId, setIssues, setStep, sprintId, sprints]);
 
   return (
-    <div>
-      {orgIssues.length && <OrganizationChart
+    <div style={{ position: 'absolute', top: 0, left: 0, width: '100vw', height: '100vh' }}>
+      {
+      /*orgIssues.length && <OrganizationChart
         value={orgIssues}
         nodeTemplate={nodeTemplate}
-      ></OrganizationChart>}
-      <IssuesList issues={issues} />
+      ></OrganizationChart>*/
+      orgIssues.length && <OrganizationChart
+        setClick={click => (addNodeChildFunc = click)}
+        onNodeClick={onNodeClick}
+        data={orgIssues}
+      />
+      }
+      {/*<IssuesList issues={issues} />*/}
     </div>
   );
 }

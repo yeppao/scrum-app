@@ -111,9 +111,11 @@ const Layout = ({ children }) => {
       <div
         style={{
           overflow: 'auto',
-          height: '100vh',
-          position: 'fixed',
-          left: 0,
+          height: '400px',
+          position: 'absolute',
+          zIndex: 1,
+          top: 40,
+          right: 40
         }}
       >
         <div className="logo" />
@@ -122,15 +124,13 @@ const Layout = ({ children }) => {
         </div>
         <UsersList />
       </div>
-      <div className="site-layout" style={{ marginLeft: 200 }}>
-        <div style={{ position: 'fixed', zIndex: 1, width: '100%' }}>
+      <div className="site-layout">
+        <div style={{ position: 'absolute', zIndex: 1, width: '80%', top: 20, left: 20 }}>
           <div className="logo" />
           <Menubar model={items}/>
         </div>
-        <div style={{ margin: '64px 16px 0', overflow: 'initial' }}>
-          <BreadCrumb model={[{ label: 'Home'},{ label: 'List' },{ label: 'App' }]} />
+        <div style={{ overflow: 'initial' }}>
           <div className="site-layout-background" style={{ padding: 24 }}>
-            <Stepper step={step} />
             <PageHeader />
             {children}
           </div>
