@@ -1,0 +1,25 @@
+/.env.local
+**/.env
+**/.env.*.local
+
+###> node ###
+node_modules
+###< node ###
+
+###> yarn ###
+**/yarn-error.log
+###< yarn ###
+
+###> phpunit/phpunit ###
+/phpunit.xml
+.phpunit.result.cache
+/build/
+###< phpunit/phpunit ###
+
+###> jest ###
+**/coverage
+###< jest ###
+
+###> vscode ###
+.vscode
+###< vscode ###

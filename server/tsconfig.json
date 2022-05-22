@@ -1,0 +1,24 @@
+{
+  "compilerOptions": {
+    "experimentalDecorators": true,
+    "module": "commonjs",
+    "target": "es2018",
+    "baseUrl": "src",
+    "paths": {
+      "@@app/*": ["*"],
+      "@@config/*": ["config/*"],
+      "@@models/*": ["models/*"],
+      "@@repositories/*": ["repositories/*"],
+      "@@routes/*": ["routes/*"],
+      "@@utils/*": ["utils/*"]
+    },
+    "outDir": "./dist",
+    "esModuleInterop": true,
+    "strict": true,
+    "allowJs": true,
+    "resolveJsonModule": true,
+    "noImplicitAny": false,
+    "emitDecoratorMetadata": true,
+    "strictPropertyInitialization": false
+  }
+}

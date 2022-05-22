@@ -1,0 +1,18 @@
+; top-most EditorConfig file
+root = true
+
+; Unix-style newlines
+[*]
+end_of_line = LF
+trim_trailing_whitespace = true
+insert_final_newline = true
+indent_style = space
+
+[Makefile]
+indent_style = tab
+
+[*.{js,json,css,scss}]
+indent_size = 2
+
+[composer.json]
+indent_size = 4
